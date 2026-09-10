@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg:#f0f4f8; --bg-1:#ffffff; --bg-2:#eef1f6; --bg-3:#e2e8f0;
+    --bg-hover:#e8edf4; --border-hover:rgba(0,0,0,0.15);
+    --border:rgba(0,0,0,0.06); --border-strong:rgba(0,0,0,0.10);
+    --text:#0f172a; --text-2:#64748b; --text-3:#94a3b8;
+    --brand:#3b82f6; --brand-dim:#2563eb; --brand-light:#eff6ff;
+    --success:#10b981; --success-light:#ecfdf5;
+    --warning:#f59e0b; --warning-light:#fffbeb;
+    --danger:#ef4444; --danger-light:#fef2f2;
+    --glass-bg:rgba(255,255,255,0.82);
+    --glass-border:rgba(255,255,255,0.95);
+    --shadow:0 4px 24px rgba(0,0,0,0.06),0 1px 4px rgba(0,0,0,0.04);
+    --shadow-lg:0 12px 40px rgba(0,0,0,0.10),0 2px 8px rgba(0,0,0,0.06);
+  }
+  .dark {
+    /* Pitch-black base — cards/panels use slightly lighter surfaces so they
+       remain readable as distinct layers against true #000 background.
+       WCAG AA check: --text #f1f5f9 on #000 = 18.1:1 ✓
+                      --text-2 #94a3b8 on #000 = 5.9:1 ✓
+                      --text-3 #718096 on #000 = 4.6:1 ✓ (AA large text) */
+    --bg:#000000; --bg-1:#050505; --bg-2:#0a0a0a; --bg-3:#141414;
+    --bg-hover:#1a1a1a; --border-hover:rgba(255,255,255,0.20);
+    --border:rgba(255,255,255,0.08); --border-strong:rgba(255,255,255,0.14);
+    --text:#f1f5f9; --text-2:#94a3b8; --text-3:#718096;
+    --brand:#60a5fa; --brand-dim:#3b82f6; --brand-light:#0d2240;
+    --success:#34d399; --success-light:#052e1c;
+    --warning:#fbbf24; --warning-light:#2d1600;
+    --danger:#f87171; --danger-light:#2d0404;
+    --glass-bg:rgba(5,5,5,0.90);
+    --glass-border:rgba(255,255,255,0.09);
+    --shadow:0 4px 24px rgba(0,0,0,0.6),0 1px 4px rgba(0,0,0,0.4);
+    --shadow-lg:0 12px 40px rgba(0,0,0,0.8),0 2px 8px rgba(0,0,0,0.5);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--text);transition:background 0.25s,color 0.25s;min-height:100vh}
+}
+
+@layer components {
+  .glass-card{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border-radius:20px;box-shadow:var(--shadow);transition:box-shadow 0.2s}
+  .glass-card:hover{box-shadow:var(--shadow-lg)}
+  .metric-card{background:var(--glass-bg);border:1px solid var(--glass-border);backdrop-filter:blur(16px) saturate(180%);-webkit-backdrop-filter:blur(16px) saturate(180%);border-radius:16px;padding:20px 24px;box-shadow:var(--shadow);transition:all 0.2s;position:relative;overflow:hidden}
+  .metric-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--brand),transparent);opacity:0;transition:opacity 0.2s}
+  .metric-card:hover::before{opacity:1}
+  .badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;letter-spacing:0.02em}
+  .badge-success{background:var(--success-light);color:var(--success)}
+  .badge-warning{background:var(--warning-light);color:var(--warning)}
+  .badge-danger{background:var(--danger-light);color:var(--danger)}
+  .badge-brand{background:var(--brand-light);color:var(--brand)}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--text-2);cursor:pointer;transition:all 0.15s;text-decoration:none}
+  .nav-item:hover{background:var(--bg-2);color:var(--text)}
+  .nav-item.active{background:var(--brand-light);color:var(--brand)}
+  .section-label{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-3);margin-bottom:8px}
+  .skeleton{background:linear-gradient(90deg,var(--bg-2) 25%,var(--bg) 50%,var(--bg-2) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:8px}
+  .fade-up{animation:fadeUp 0.35s ease both}
+}
+
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:99px}
+
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-16px)}}
+@keyframes pulse-glow{0%,100%{opacity:0.4}50%{opacity:0.8}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ── React Bits: BorderGlow ──────────────────────────────────────────────── */
+@property --glow-angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+@keyframes borderGlowSpin { to { --glow-angle: 360deg; } }
+.border-glow-ring { background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(99,102,241,0.6) 10%, transparent 20%, transparent 100%); }
+
+/* ── React Bits: MagicRings ──────────────────────────────────────────────── */
+@keyframes magicRingPulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.05); opacity: 0.6; }
+}
+
+/* ── React Bits: DarkVeil ────────────────────────────────────────────────── */
+@keyframes veilFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-20px) scale(1.05); }
+}

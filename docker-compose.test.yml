@@ -1,0 +1,45 @@
+version: "3.9"
+
+# Ephemeral test environment for Kwudle integration tests
+# Usage:
+#   docker compose -f docker-compose.test.yml up -d
+#   docker compose -f docker-compose.test.yml down -v
+
+services:
+  clickhouse-test:
+    image: clickhouse/clickhouse-server:24.3-alpine
+    container_name: sentinel-clickhouse-test
+    environment:
+      CLICKHOUSE_DB: sentinel
+      CLICKHOUSE_USER: sentinel_user
+      CLICKHOUSE_PASSWORD: sentinel_password
+      CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+    ports:
+      - "8124:8123"
+      - "9002:9000"
+    volumes:
+      - ./scripts/local_ddl.sql:/docker-entrypoint-initdb.d/01_ddl.sql:ro
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8123/ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    networks:
+      - sentinel-test-net
+
+  redis-test:
+    image: redis:7-alpine
+    container_name: sentinel-redis-test
+    ports:
+      - "6380:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    networks:
+      - sentinel-test-net
+
+networks:
+  sentinel-test-net:
+    driver: bridge

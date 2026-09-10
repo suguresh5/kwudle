@@ -1,0 +1,193 @@
+name: Kwudle CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # ── Validate compose file syntax ─────────────────────────────────────────────
+  compose-validate:
+    name: Docker Compose Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate docker-compose.yml syntax
+        run: docker compose config --quiet
+
+  # ── Static analysis & tenant isolation check ─────────────────────────────────
+  static-analysis:
+    name: Tenant Isolation & Static Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Run Tenant Isolation Check
+        run: node scripts/check-tenant-isolation.js
+
+  # ── Go services: ingest + worker ─────────────────────────────────────────────
+  go-services:
+    name: Go Services (Ingest & Worker)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache-dependency-path: |
+            services/ingest/go.sum
+            services/worker/go.sum
+
+      - name: Ingest Service - Vet & Unit Tests
+        run: |
+          cd services/ingest
+          go vet ./...
+          go test -v -race -coverprofile=coverage-ingest.out ./...
+
+      - name: Worker Service - Vet & Unit Tests
+        run: |
+          cd services/worker
+          go vet ./...
+          go test -v -race -coverprofile=coverage-worker.out ./...
+
+      - name: Upload Ingest Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-ingest
+          path: services/ingest/coverage-ingest.out
+          retention-days: 7
+
+      - name: Upload Worker Coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-worker
+          path: services/worker/coverage-worker.out
+          retention-days: 7
+
+  # ── Node services: API + Dashboard ───────────────────────────────────────────
+  node-services:
+    name: Node Services (API & Dashboard)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: |
+            services/api/package-lock.json
+            services/dashboard/package-lock.json
+
+      - name: API Service - Install & Build
+        run: |
+          cd services/api
+          npm ci
+          npm run build
+
+      - name: API Service - Tests
+        run: |
+          cd services/api
+          npm test --if-present
+
+      - name: Dashboard Service - Build
+        run: |
+          cd services/dashboard
+          npm ci
+          npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+  # ── Integration tests (Ingest + Worker against real ClickHouse + Redis) ───────
+  integration-tests:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    services:
+      clickhouse:
+        image: clickhouse/clickhouse-server:24.3-alpine
+        env:
+          CLICKHOUSE_DB: sentinel
+          CLICKHOUSE_USER: sentinel_user
+          CLICKHOUSE_PASSWORD: sentinel_password
+          CLICKHOUSE_DEFAULT_ACCESS_MANAGEMENT: 1
+        ports:
+          - 8123:8123
+          - 9000:9000
+        options: >-
+          --health-cmd "wget --spider -q http://localhost:8123/ping"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 10
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 3s
+          --health-timeout 3s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          cache-dependency-path: |
+            services/ingest/go.sum
+            services/worker/go.sum
+
+      - name: Apply ClickHouse Local DDL
+        run: |
+          # Apply DDL using clickhouse-client or curl
+          docker exec ${{ job.services.clickhouse.id }} clickhouse-client \
+            --user sentinel_user --password sentinel_password \
+            --multiquery < scripts/local_ddl.sql || true
+
+      - name: Run Ingest Integration Suite
+        run: |
+          cd services/ingest
+          go test -tags=integration -v ./...
+        env:
+          CLICKHOUSE_HOST: localhost
+          CLICKHOUSE_PORT: 9000
+          CLICKHOUSE_USER: sentinel_user
+          CLICKHOUSE_PASSWORD: sentinel_password
+          CLICKHOUSE_DB: sentinel
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          REDIS_PASSWORD: ""
+          PII_HASH_SALT: ci-test-salt
+          BATCHER_FLUSH_SIZE: "100"
+          BATCHER_FLUSH_INTERVAL_MS: "500"
+
+      - name: Run Worker Integration Suite
+        run: |
+          cd services/worker
+          go test -tags=integration -v ./...
+        env:
+          CLICKHOUSE_HOST: localhost
+          CLICKHOUSE_PORT: 9000
+          CLICKHOUSE_USER: sentinel_user
+          CLICKHOUSE_PASSWORD: sentinel_password
+          CLICKHOUSE_DB: sentinel
+          REDIS_HOST: localhost
+          REDIS_PORT: 6379
+          REDIS_PASSWORD: ""
+          ALERT_POLL_INTERVAL_S: "5"
+          DLQ_DIR: "/tmp/dlq-ci"
+          DASHBOARD_INTERNAL_URL: "http://localhost:3000"
+          INTERNAL_API_KEY: "ci-internal-key"
+          GEMINI_API_KEY: ""

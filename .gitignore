@@ -1,0 +1,31 @@
+# Secrets — never commit
+.env
+*.key
+*.pem
+
+# GeoIP database (download separately from MaxMind)
+data/geoip/
+
+# DLQ data
+data/dlq/
+
+# Build outputs
+services/ingest/sentinel-ingest
+services/worker/sentinel-worker
+services/api/dist/
+services/api/node_modules/
+services/dashboard/.next/
+services/dashboard/node_modules/
+services/dashboard/out/
+
+# Go
+*.test
+coverage.out
+
+# Docker volumes
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp

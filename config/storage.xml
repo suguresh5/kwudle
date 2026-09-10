@@ -1,0 +1,28 @@
+<clickhouse>
+    <storage_configuration>
+        <disks>
+            <default>
+                <type>local</type>
+                <path>/var/lib/clickhouse/</path>
+            </default>
+            <cold_storage>
+                <type>local</type>
+                <path>/var/lib/clickhouse/cold/</path>
+            </cold_storage>
+        </disks>
+        <policies>
+            <tiered>
+                <volumes>
+                    <hot>
+                        <disk>default</disk>
+                        <max_data_part_size_bytes>1073741824</max_data_part_size_bytes>
+                    </hot>
+                    <cold>
+                        <disk>cold_storage</disk>
+                    </cold>
+                </volumes>
+                <move_factor>0.1</move_factor>
+            </tiered>
+        </policies>
+    </storage_configuration>
+</clickhouse>
