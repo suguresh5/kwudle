@@ -29,3 +29,11 @@ coverage.out
 .idea/
 .vscode/
 *.swp
+
+# Scratch / temp debug files
+scratch/
+cookies.txt
+
+# Context dump files
+*Attached Element Context*.txt
+
