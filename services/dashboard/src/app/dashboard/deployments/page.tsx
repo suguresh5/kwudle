@@ -26,7 +26,7 @@ export default function DeploymentsPage() {
           <h1 style={{ fontSize: '22px', fontWeight: '800', color: 'var(--text)', letterSpacing: '-0.4px' }}>Deployments</h1>
           <p style={{ fontSize: '14px', color: 'var(--text-2)', marginTop: '4px' }}>Performance impact per release via ASOF JOIN</p>
         </div>
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', background: 'var(--bg-2)', borderRadius: '10px', padding: '3px', gap: '2px' }}>
             {ENVS.map(e => <button key={e} onClick={() => setEnv(e)} style={{ padding: '6px 12px', borderRadius: '7px', border: 'none', cursor: 'pointer', fontSize: '12px', fontWeight: '500', background: env === e ? 'var(--bg-1)' : 'transparent', color: env === e ? 'var(--text)' : 'var(--text-2)', boxShadow: env === e ? 'var(--shadow)' : 'none', transition: 'all 0.15s' }}>{e}</button>)}
           </div>

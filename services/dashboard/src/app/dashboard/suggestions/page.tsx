@@ -240,7 +240,7 @@ export default function SuggestionsPage() {
       </div>
 
       {/* ── Metric cards ─────────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '16px', margin: '24px 0' }}>
+      <div className="kpi-grid-3" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '16px', margin: '24px 0' }}>
         <MetricCard label="Total Suggestions" value={active.length.toString()} icon="✦" trend="neutral" loading={isLoading} />
         <MetricCard label="High Priority" value={highPri.toString()} icon="🔴" trend={highPri > 0 ? 'down' : 'up'} trendValue={highPri > 0 ? 'Needs attention' : 'All clear'} loading={isLoading} />
         <MetricCard label="Completed" value={done.toString()} icon="✓" trend="up" loading={isLoading} />

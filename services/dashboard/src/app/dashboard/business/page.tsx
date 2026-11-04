@@ -93,7 +93,7 @@ export default function BusinessPage() {
   return (
     <div className="fade-up">
       {/* ── Revenue Trend + Top Selling Items ─────────────────────────────── */}
-      <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',marginBottom:'20px' }}>
+      <div className="split-grid" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',marginBottom:'20px' }}>
       <div className="glass-card" style={{ padding:'24px' }}>
         <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'16px' }}>
           <div>
@@ -145,7 +145,7 @@ export default function BusinessPage() {
       </div>
 
       {/* ── Stock Alerts + Customer Reviews ────────────────────────────────── */}
-      <div style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',marginBottom:'20px' }}>
+      <div className="split-grid" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:'16px',marginBottom:'20px' }}>
         {/* Stock Alerts */}
         <div className="glass-card" style={{ padding:'24px' }}>
           <h3 style={{ display:'flex',alignItems:'center',gap:'8px',fontSize:'14px',fontWeight:'700',color:'var(--text)',marginBottom:'12px' }}>

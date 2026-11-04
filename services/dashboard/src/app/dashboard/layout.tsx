@@ -2,6 +2,7 @@ import { cookies, headers } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { verifyToken, getUser } from '@/lib/auth'
 import { Navbar } from '@/components/layout/Navbar'
+import { DashboardBackground } from '@/components/layout/DashboardBackground'
 import { FloatingAssistant } from '@/components/ai/FloatingAssistant'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -26,12 +27,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', position: 'relative' }}>
-      <Navbar user={{ email: payload.email, name: user?.name || payload.email.split('@')[0], businessType: user?.businessType || 'startup' }} />
-      <main style={{ flex: 1, overflowY: 'auto', padding: isOnboarding ? '0' : '28px 32px' }}>
-        {children}
-      </main>
-      {!isOnboarding && <FloatingAssistant />}
+    <div className="app-canvas" style={{ position: 'relative', minHeight: '100vh' }}>
+      <DashboardBackground />
+      <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%' }}>
+        <Navbar user={{ email: payload.email, name: user?.name || payload.email.split('@')[0], businessType: user?.businessType || 'startup' }} />
+        <main className={isOnboarding ? 'app-main app-main-flush' : 'app-main'}>
+          {children}
+        </main>
+        {!isOnboarding && <FloatingAssistant />}
+      </div>
     </div>
   )
 }

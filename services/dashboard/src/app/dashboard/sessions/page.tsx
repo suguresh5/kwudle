@@ -17,7 +17,7 @@ export default function SessionsPage() {
         <p style={{ fontSize: '14px', color: 'var(--text-2)', marginTop: '4px' }}>User sessions via 30-minute gap stitching</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+      <div className="kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '16px', marginBottom: '24px' }}>
         {[
           { label: 'Total Sessions', value: sessions?.length?.toLocaleString() ?? '—', icon: '◉' },
           { label: 'Avg Duration', value: `${avg(durations).toFixed(1)}s`, icon: '⏱️' },

@@ -50,7 +50,7 @@ export default function FunnelPage() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.35fr) minmax(280px, 0.85fr)', gap: '16px', marginBottom: '20px' }}>
+      <div className="split-grid" style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.35fr) minmax(280px, 0.85fr)', gap: '16px', marginBottom: '20px' }}>
         {/* Visual funnel bars */}
         <div className="glass-card" style={{ padding: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>

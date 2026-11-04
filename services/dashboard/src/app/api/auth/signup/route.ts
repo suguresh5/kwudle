@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     const otp = generateOTP()
     storeOTP(email, otp, { email, name, passwordHash })
     const sent = await sendOTPEmail(email, name, otp)
-    if (!sent && process.env.NODE_ENV === 'production') {
+    if (!sent && (process.env.GMAIL_USER || process.env.RESEND_API_KEY)) {
       return NextResponse.json({ error: 'Unable to send verification email' }, { status: 502 })
     }
     return NextResponse.json({ success: true, emailSent: sent, dev: !sent, ...(sent ? {} : { otp }) })

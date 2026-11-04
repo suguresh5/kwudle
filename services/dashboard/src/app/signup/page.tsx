@@ -118,11 +118,32 @@ export default function SignupPage() {
       `}</style>
 
       {/* Magic Rings Animated Background */}
-      <MagicRings
-        size={700}
-        color="rgba(99,102,241,0.08)"
-        style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1 }}
-      />
+      <div style={{
+        position: 'absolute',
+        inset: 0,
+        width: '100%',
+        height: '100%',
+        zIndex: 1,
+        pointerEvents: 'none',
+      }}>
+        <MagicRings
+          color="#818cf8"
+          colorTwo="#60a5fa"
+          motion="pulse"
+          ringCount={6}
+          speed={0.8}
+          lineThickness={1.4}
+          glow={0.45}
+          opacity={0.55}
+          baseRadius={0.3}
+          radiusStep={0.09}
+          expansion={0.1}
+          hoverScale={1.1}
+          hoverIntensity={0.5}
+          clickBurst={true}
+          theme="dark"
+        />
+      </div>
 
       <div style={{ width: '100%', maxWidth: '440px', position: 'relative', zIndex: 10, animation: 'fadeUp 0.4s ease both' }}>
         {/* Brand Header */}
@@ -143,12 +164,12 @@ export default function SignupPage() {
 
         {/* Card */}
         <div style={{
-          background: 'rgba(17,24,39,0.85)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          backdropFilter: 'blur(20px)',
+          background: 'rgba(17,24,39,0.76)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          backdropFilter: 'blur(24px)',
           borderRadius: '24px',
           padding: '32px',
-          boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.55), 0 0 35px rgba(168,85,247,0.1)',
         }}>
           {step === 'form' && (
             <>

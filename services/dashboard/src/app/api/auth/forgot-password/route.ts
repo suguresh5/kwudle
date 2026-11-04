@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const otp = generateOTP()
     storeOTP(email, otp)
     const sent = await sendPasswordResetEmail(email, user.name, otp)
-    if (!sent && process.env.NODE_ENV === 'production') {
+    if (!sent && (process.env.GMAIL_USER || process.env.RESEND_API_KEY)) {
       return NextResponse.json({ error: 'Unable to send reset email' }, { status: 502 })
     }
     return NextResponse.json({

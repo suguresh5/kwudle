@@ -66,10 +66,17 @@ export function FloatingAssistant() {
     if (anomalyData || anomalyLoading) return
     setAnomalyLoading(true)
     try {
+      const dashboardMetrics = typeof window !== 'undefined' ? (window as any).__KWUDLE_DASHBOARD_METRICS__ : null
       const res = await fetch('/api/anomaly', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ metrics: { source: 'floating_assistant', timestamp: new Date().toISOString() } }),
+        body: JSON.stringify({
+          metrics: {
+            source: 'floating_assistant',
+            timestamp: new Date().toISOString(),
+            dashboard_metrics: dashboardMetrics,
+          }
+        }),
       })
       if (res.status === 429) {
         const data = await res.json()
@@ -114,6 +121,7 @@ export function FloatingAssistant() {
     setLoading(true)
 
     try {
+      const dashboardMetrics = typeof window !== 'undefined' ? (window as any).__KWUDLE_DASHBOARD_METRICS__ : null
       const context = anomalyData ? `\nCurrent dashboard analysis:\n${JSON.stringify(anomalyData, null, 2)}` : ''
       const res = await fetch('/api/anomaly', {
         method: 'POST',
@@ -123,6 +131,7 @@ export function FloatingAssistant() {
             question: text,
             context,
             previous_messages: messages.slice(-4).map(m => `${m.role}: ${m.content}`).join('\n'),
+            dashboard_metrics: dashboardMetrics,
           },
         }),
       })

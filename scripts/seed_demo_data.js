@@ -2,7 +2,7 @@ const crypto = require('crypto')
 
 const CH_HOST = process.env.CLICKHOUSE_HOST ? `http://${process.env.CLICKHOUSE_HOST}:8123` : 'http://localhost:8123'
 const CH_USER = process.env.CLICKHOUSE_USER || 'sentinel_user'
-const CH_PASS = process.env.CLICKHOUSE_PASSWORD || 'sxbTelAyMsHnPmGYHGHwA'
+const CH_PASS = process.env.CLICKHOUSE_PASSWORD || 'change_me_strong_password'
 
 const TENANTS = [
   '77f2888c-5c59-4b65-a6f2-d89812525694',
@@ -79,7 +79,7 @@ function resp(arr) {
 async function seedRedisKeys() {
   return new Promise((resolve) => {
     const client = net.connect(6379, 'localhost', () => {
-      const redisPass = process.env.REDIS_PASSWORD || '1H0mkDrLaXbtdLtUg8qyFQ'
+      const redisPass = process.env.REDIS_PASSWORD || 'change_me_redis_password'
       client.write(resp(['AUTH', redisPass]))
       const v1 = JSON.stringify({ tenant_id: '77f2888c-5c59-4b65-a6f2-d89812525694', rate_limit_tier: 'pro', revoked: false })
       const k1 = 'apikey:6c9c1553a363d2409d009f5678a09e11d5da974500c8072cf6fe858cd8adb676'

@@ -60,7 +60,7 @@ export default function HeatmapPage() {
         <p style={{ fontSize: '14px', color: 'var(--text-2)', marginTop: '4px' }}>Event frequency by hour of day × day of week</p>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+      <div className="kpi-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: '16px', marginBottom: '24px' }}>
         {[
           { label: 'Peak Hour', value: formatHour(peakHour), icon: '⏰', sub: 'highest traffic' },
           { label: 'Peak Day', value: peakDay, icon: '📅', sub: 'busiest day' },

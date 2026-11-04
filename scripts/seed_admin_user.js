@@ -12,7 +12,7 @@ async function seed() {
 
   const chHost = process.env.CLICKHOUSE_HOST ? `http://${process.env.CLICKHOUSE_HOST}:8123` : 'http://localhost:8123'
   const chUser = process.env.CLICKHOUSE_USER || 'sentinel_user'
-  const chPass = process.env.CLICKHOUSE_PASSWORD || 'sxbTelAyMsHnPmGYHGHwA'
+  const chPass = process.env.CLICKHOUSE_PASSWORD || 'change_me_strong_password'
 
   const res = await fetch(`${chHost}/?user=${chUser}&password=${chPass}`, {
     method: 'POST',

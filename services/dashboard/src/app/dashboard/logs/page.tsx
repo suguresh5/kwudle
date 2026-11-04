@@ -57,7 +57,7 @@ function LogRowItem({ row, expanded, onToggle }: { row: LogRow; expanded: boolea
       <div
         onClick={onToggle}
         style={{
-          display: 'grid', gridTemplateColumns: '120px 80px 150px 1fr 32px',
+          display: 'grid', gridTemplateColumns: '120px 80px 150px 1fr 32px', minWidth: '760px',
           alignItems: 'center', gap: '12px', padding: '11px 20px',
           borderBottom: '1px solid var(--border)', cursor: 'pointer',
           transition: 'background 0.12s', background: expanded ? 'var(--bg-2)' : 'transparent',
@@ -183,7 +183,7 @@ export default function LogsPage() {
       )}
 
       {/* ── Metric cards ─────────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: '16px', marginBottom: '24px' }}>
+      <div className="split-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '16px', marginBottom: '24px' }}>
         <MetricCard label="Total Logs" value={totalLogs.toLocaleString()} icon="◫" trend="neutral" loading={isLoading} />
         <MetricCard label="Errors (this window)" value={errorCount.toString()} icon="⚠" trend={errorCount > 0 ? 'down' : 'up'} trendValue={errorCount > 10 ? 'High!' : errorCount > 0 ? 'Low' : 'None'} loading={isLoading} />
       </div>
@@ -220,9 +220,9 @@ export default function LogsPage() {
       </div>
 
       {/* ── Logs table ───────────────────────────────────────────────── */}
-      <div className="glass-card" style={{ overflow: 'hidden' }}>
+      <div className="glass-card" style={{ overflow: 'auto' }}>
         {/* Table header */}
-        <div style={{ display: 'grid', gridTemplateColumns: '120px 80px 150px 1fr 32px', gap: '12px', padding: '10px 20px', borderBottom: '1px solid var(--border)', background: 'var(--bg-2)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '120px 80px 150px 1fr 32px', gap: '12px', padding: '10px 20px', borderBottom: '1px solid var(--border)', background: 'var(--bg-2)', minWidth: '760px' }}>
           {['Timestamp', 'Level', 'Service', 'Message', ''].map(h => (
             <span key={h} style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</span>
           ))}
@@ -230,7 +230,7 @@ export default function LogsPage() {
 
         {/* Skeleton loading */}
         {isLoading && [...Array(5)].map((_, i) => (
-          <div key={i} style={{ display: 'grid', gridTemplateColumns: '120px 80px 150px 1fr 32px', gap: '12px', padding: '14px 20px', borderBottom: '1px solid var(--border)' }}>
+          <div key={i} style={{ display: 'grid', gridTemplateColumns: '120px 80px 150px 1fr 32px', gap: '12px', padding: '14px 20px', borderBottom: '1px solid var(--border)', minWidth: '760px' }}>
             <div className="skeleton" style={{ height: 14 }} />
             <div className="skeleton" style={{ height: 14, width: 50 }} />
             <div className="skeleton" style={{ height: 14, width: 120 }} />

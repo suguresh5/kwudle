@@ -36,7 +36,7 @@ export default function AlertsPage() {
         <div className="glass-card" style={{ padding: '24px', marginBottom: '20px', borderTop: '2px solid var(--brand)' }}>
           <h3 style={{ fontSize: '14px', fontWeight: '600', color: 'var(--brand)', marginBottom: '20px' }}>New Alert Rule</h3>
           <form onSubmit={handleCreate}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+            <div className="form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
               {[{ label: 'Metric', key: 'metric', type: 'text', placeholder: 'error_rate' }, { label: 'Threshold', key: 'threshold', type: 'number', placeholder: '5' }, { label: 'Window (seconds)', key: 'window_seconds', type: 'number', placeholder: '300' }, { label: 'Notify Channel', key: 'notify_channel', type: 'text', placeholder: 'slack' }].map(f => (
                 <div key={f.key}>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: 'var(--text-2)', marginBottom: '6px' }}>{f.label}</label>
@@ -61,15 +61,15 @@ export default function AlertsPage() {
         </div>
       )}
 
-      <div className="glass-card" style={{ overflow: 'hidden' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', padding: '10px 20px', borderBottom: '1px solid var(--border)' }}>
+      <div className="glass-card" style={{ overflow: 'auto' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', padding: '10px 20px', borderBottom: '1px solid var(--border)', minWidth: '720px' }}>
           {['Metric / Condition', 'Window', 'Channel', 'Last Fired', 'Action'].map(h => (
             <span key={h} style={{ fontSize: '11px', fontWeight: '600', color: 'var(--text-3)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{h}</span>
           ))}
         </div>
         {isLoading ? [...Array(3)].map((_, i) => <div key={i} style={{ padding: '14px 20px' }}><div className="skeleton" style={{ height: '16px' }} /></div>)
           : (rules ?? []).map((rule: any) => (
-            <div key={rule.id} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', alignItems: 'center', padding: '14px 20px', borderBottom: '1px solid var(--border)', transition: 'background 0.1s' }}
+            <div key={rule.id} style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', alignItems: 'center', padding: '14px 20px', borderBottom: '1px solid var(--border)', transition: 'background 0.1s', minWidth: '720px' }}
               onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-2)')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>

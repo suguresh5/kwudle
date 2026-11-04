@@ -32,7 +32,8 @@ export function BorderGlow({
           inset: '-2px',
           borderRadius: 'inherit',
           background: `conic-gradient(from var(--glow-angle, 0deg), transparent 0%, ${glowColor} 10%, transparent 20%, transparent 100%)`,
-          animation: 'borderGlowSpin 3s linear infinite',
+          animation: 'borderGlowSpin 8s linear infinite',
+          opacity: 0.35,
           zIndex: 0,
         }}
       />

@@ -47,6 +47,35 @@ const METRIC_ICONS: Record<string, React.ReactNode> = {
       <line x1="6" y1="20" x2="6" y2="14"/>
     </svg>
   ),
+  currency: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="12" y1="1" x2="12" y2="23"/>
+      <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+    </svg>
+  ),
+  cart: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="21" r="1"/>
+      <circle cx="20" cy="21" r="1"/>
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+    </svg>
+  ),
+  userPlus: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="8.5" cy="7" r="4"/>
+      <line x1="20" y1="8" x2="20" y2="14"/>
+      <line x1="23" y1="11" x2="17" y2="11"/>
+    </svg>
+  ),
+  repeat: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="17 1 21 5 17 9"/>
+      <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+      <polyline points="7 23 3 19 7 15"/>
+      <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+    </svg>
+  ),
 }
 
 // Glow color map
@@ -59,6 +88,10 @@ const GLOW_COLORS: Record<string, string> = {
   coffee: 'rgba(245,158,11,0.5)',
   plate: 'rgba(34,197,94,0.5)',
   chart: 'rgba(59,130,246,0.5)',
+  currency: 'rgba(16,185,129,0.5)',
+  cart: 'rgba(59,130,246,0.5)',
+  userPlus: 'rgba(139,92,246,0.5)',
+  repeat: 'rgba(16,185,129,0.5)',
 }
 
 export function MetricCard({ label, value, sub, trend, trendValue, icon, loading }: any) {
@@ -76,6 +109,7 @@ export function MetricCard({ label, value, sub, trend, trendValue, icon, loading
   const iconColorMap: Record<string, string> = {
     users: '#6366f1', events: '#f59e0b', shield: '#10b981', clock: '#3b82f6',
     rocket: '#8b5cf6', coffee: '#f59e0b', plate: '#22c55e', chart: '#3b82f6',
+    currency: '#10b981', cart: '#3b82f6', userPlus: '#8b5cf6', repeat: '#10b981',
   }
   const iconColor = iconColorMap[iconKey] || '#3b82f6'
 
@@ -97,7 +131,7 @@ export function MetricCard({ label, value, sub, trend, trendValue, icon, loading
             </div>
           )}
         </div>
-        <p style={{ fontSize:'28px', fontWeight:'800', color:'var(--text)', letterSpacing:'-0.5px', lineHeight:1, marginBottom:'8px' }}>
+        <p style={{ fontSize:'28px', fontWeight:'700', color:'var(--text)', letterSpacing:'-0.04em', lineHeight:1.05, marginBottom:'8px', fontVariantNumeric:'tabular-nums' }}>
           {value}
         </p>
         {(sub || trendValue) && (
